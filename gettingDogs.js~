@@ -1,0 +1,30 @@
+
+
+
+function getDogs(vurl) {
+	var http = false;
+
+	if (navigator.appName == "Microsoft Internet Explorer") {
+		http = new ActiveXObject("Microsoft.XMLHTTP");
+	} else {
+		http = new XMLHttpRequest();
+	}
+
+	var dogs;
+	http.open("POST", vurl, true);
+	http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	http.onreadystatechange = function() {
+		if (http.readyState == 4) {
+			dogs = JSON.parse(http.responseText);
+			var tab = document.getElementById('dogtab');
+			var i = tab.rows.length;
+			for (j = 0; j < dogs.length; j++) {
+				var rt = "<tr> <td>" + dogs[j].petName + "</td> <td>" + dogs[j].petKind
+					+ "</td> <td>" + dogs[j].breed+ "</td> <td>" + "<a href=moreaboutyourpet.php?petName=" + dogs[j].petName + "&imgURL=" + dogs[j].imageURL + "&descURL=" + dogs[j].descURL + "&breed=" + dogs[j].breed + "&dateposted=" + dogs[j].datePosted + "&petKind=" + dogs[j].petKind +">link</a>"+"</td></tr>";
+			var rr = tab.insertRow(i);
+			rr.innerHTML = rt;
+			}
+		}
+	}
+	http.send(null);
+}

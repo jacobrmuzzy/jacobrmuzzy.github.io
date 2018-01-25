@@ -1,0 +1,6 @@
+<?php
+header('Content-Type: text/json'); 
+$string = array();
+$string[0] = array("siteName"=> "Temporary","awakeURL"=> "http://www.cs.colostate.edu/awakeURL","petsListURL"=> "http://www.cs.colostate.edu/petlistURL");
+echo json_encode($string);
+?>

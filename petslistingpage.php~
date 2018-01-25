@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Pets in the Federation</title>
+<script type="text/javascript" src="petlistingpage.js"></script>
+<script type="text/javascript">
+	window.onload = init;
+</script>
+</head>
+<body>
+	<h3 style="text-align: center">Our Pets</h3>
+	<table id='dogtab'>
+		<tr>
+			<th>Name of Animal</th>
+			<th>Kind of Animal</th>
+			<th>Breed</th>
+			<th>Date Posted</th>
+			<th>ID number</th>
+		</tr>
+	</table>
+</body>
+</html>

@@ -1,0 +1,58 @@
+var vurl = 'https://www.cs.colostate.edu/~ct310/yr2016sp/more_assignments/project03masterlist.php';
+var http = false;
+
+if (navigator.appName == "Microsoft Internet Explorer") {
+	http = new ActiveXObject("Microsoft.XMLHTTP");
+} else {
+	http = new XMLHttpRequest();
+}
+
+function getDogs() {
+	var dogs;
+	http.open("POST", vurl, true);
+	http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	http.onreadystatechange = function() {
+		if (http.readyState == 4) {
+			dogs = JSON.parse(http.responseText);
+			dogsToTable(dogs);
+		}
+	}
+	http.send(null);
+}
+function dogsToTable(dogs) {
+	var tab = document.getElementById('dogtab');
+	var i = tab.rows.length;
+	for (j = 0; j < dogs.length; j++) {
+		var rt = "</td> <td>" + getPets(dogs[j].petsListURL) + "</td></tr>";
+		var rr = tab.insertRow(i);
+		rr.innerHTML = rt;
+	}
+}
+function init() {
+	getDogs();
+}
+
+function getPets(){
+
+var xmlhttp = new XMLHttpRequest();
+var url = petslisturl;
+xmlhttp.open("GET", url, true);
+xmlhttp.send();
+
+xmlhttp.onreadystatechange = function() {
+    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        var myArr = JSON.parse(xmlhttp.responseText);
+        myFunction(myArr);
+    }
+};
+
+function myFunction(arr) {
+    var out = "";
+    var i;
+    for(i = 0; i < arr.length; i++) {
+        out += '<a href="' + arr[i].petName + '">' + 
+        arr[i].display + '</a><br>';
+    }
+    document.getElementById("dogtab").innerHTML = out;
+}
+}

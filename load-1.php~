@@ -1,0 +1,23 @@
+
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="author" content=" Jacob Muzzy" />
+	<meta name="description" content=" fake pet adoption page"/>
+	<title> Adoptable Animals </title>
+	<link href="style.css" rel="stylesheet" type="text/css" />
+	
+</head>
+
+<?php include 'header.php'; ?>	
+	
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+<script src="load-1.js"></script>
+<script type="text/javascript">
+	$(document).ready(function () { loadJSON()};);
+</script>
+<body>
+
+</body>
+<?php  include 'footer.php'; ?>

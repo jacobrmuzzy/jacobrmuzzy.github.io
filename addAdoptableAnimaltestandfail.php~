@@ -1,0 +1,148 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="author" content=" Jacob Muzzy" />
+	<meta name="description" content=" fake home page"/>
+	<title> Add an Animal </title>
+	<link href="style.css" rel="stylesheet" type="text/css" />
+	
+</head>
+<?php include 'header.php'; 
+
+if (isset($_SESSION["loggedIn"])){//you cannot add a page for adpation unless you are login
+
+if(isset($_POST["submit"])) {
+	$target_dir = "uploads/";
+$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+
+$uploadOk = 1;
+$imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
+// Check if image file is a actual image or fake image
+
+    $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+    if($check !== false) {
+        echo "File is an image - " . $check["mime"] . ".";
+        $uploadOk = 1;
+    } else {
+        echo "File is not an image.";
+        $uploadOk = 0;
+    }
+
+// Check if file already exists
+if (file_exists($target_file)) {
+    echo "Sorry, file already exists.";
+    $uploadOk = 0;
+}
+// Check file size
+if ($_FILES["fileToUpload"]["size"] > 500000) {
+    echo "Sorry, your file is too large.";
+    $uploadOk = 0;
+}
+// Allow certain file formats
+if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+&& $imageFileType != "gif" ) {
+    echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+    $uploadOk = 0;
+}
+// Check if $uploadOk is set to 0 by an error
+if ($uploadOk == 0) {
+    echo "Sorry, your file was not uploaded.";
+// if everything is ok, try to upload file
+} else {
+    if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+        echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
+    } else {
+        echo "Sorry, there was an error uploading your file.";
+    }
+}
+
+	$animalname = $_POST ["name"];
+	$animalbreed = $_POST ["breed"];
+	$animalkind = $_POST ["kind"];
+	$animaldescription = $_POST ["description"];
+	$dateposted = date("m/d/Y")
+
+
+
+
+	$dbh = new SQLite3('users.db');
+	$count = $dbh->querySingle("SELECT COUNT(*) as count FROM animals2");
+	
+	$count = $count +1;
+	
+	$insertuser = $dbh->exec("INSERT INTO animals (id, animalname, animalkind, animalbreed, dateposted, pathtoimage, animaldescription) VALUES ('".$count."','".$animalname."','".$animalkind."','".$animalbreed."','".$dateposted."','".$morf."','".$target_file."','".$animaldescription."');");	
+	echo $target_file;
+	$old = umask(0);
+	chmod("$target_file", 0755);
+	umask($old);
+	?>
+	
+	<img class="thumbnail"src="<?php echo $target_file?>" alt="" />
+	 
+	<?php
+
+}else {
+?>
+
+
+
+	<div id="content">	
+				
+			<p>Please Enter Your Information for your Pet that you would like to put of for adoption.</p>
+			<form method="post" enctype="multipart/form-data" action="addAdoptableAnimal.php" class="form-inline">
+				<div class="form-group">
+				Select image to upload:
+    			<input type="file" name="fileToUpload" id="fileToUpload">
+				</div>
+				<br/>
+				<input type="text" size="20" name="name" placeholder="Name"/>
+				<br/>
+				<input type="text" size="20" name="kind" placeholder="Kind of animal(type of animal, like cat, dog, bird)"/>
+				<br/>
+				<input type="text" size="20" name="breed" placeholder="Breed of animal"/>
+				<br/>
+			   <textarea name="description" rows="5" cols="40" placeholder="Talk about what makes them great."></textarea><br/>
+			   <input type="hidden" value="done" name="submit">
+				<br/>
+			</div>
+				<input type="submit" value="submit"/>
+				
+			</form>	
+			
+	
+	</div>
+
+
+
+
+<?php }
+
+include 'footer.php';
+
+function parseFileSuffix($iType) {
+	if ($iType == 'image/jpeg') {
+		return 'jpg';
+	}
+	if ($iType == 'image/gif') {
+		return 'gif';
+	}
+	if ($iType == 'image/png') {
+		return 'png';
+	}
+	if ($iType == 'image/tif') {
+		return 'tif';
+	}
+	return '';
+}
+
+
+}
+else{
+	echo "<p>Please login to add a pet for adoption</p>";
+}
+
+ ?>
+
+<!-- CREATE TABLE accounts(firstname varchar(30), lastname varchar(30), middlename varchar(30), phonenumber varchar(30), email varchar(30), username varchar(30), password text, priordog varchar(10), priorcat varchar(10), priorturtle varchar(10), fosteringpet varchar(10), explination text, petneedinghome varchar(10));
+ -->
